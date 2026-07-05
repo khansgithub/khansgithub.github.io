@@ -7,14 +7,14 @@
         <h4 class="subtitle" style="margin-top: 0;">
             <span style="text-decoration: line-through;font-style: italic;opacity: 0.3;">{{ site.sub_title[0] }}</span>
             <br/>
-            <span>{{ site.subtitle[1] }}</span>
+            <span>{{ site.sub_title[1] }}</span>
         </h4>
     </hgroup>
     <nav>
         <p>
             <a href="{{ site.url }}">Home</a> 
             <a href="{{ site.url }}{{ site.Blog }}">Blog</a>
-            <a href="{{ site.url }}{{ site.Life }}">Life</a>
+            <a href="{{ site.url }}{{ site.Misc }}">Misc</a>
         
             {% for link in site.links %}
                 <a href="{{ site.url }}{{ link[1] }}">{{ link[0] }}</a>
