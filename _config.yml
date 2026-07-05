@@ -1,10 +1,13 @@
 ###########
 # site.title
 
-title: jekyllBear
-description: a minimal, text focused blog theme
+title: khans blog
+sub_title:
+  - rockstar ninja developer
+  - mediore alright code writer
+description: blog of a mediore alright code writing person
 # baseurl: "/jekyllBear" # the subpath of your site, e.g. /blog/
-url: "https://knhash.in/jekyllBear" # the base hostname & protocol for your site
+url: "https://khansgithub.github.io/" # the base hostname & protocol for your site
 # host: 0.0.0.0
 
 
@@ -46,17 +49,18 @@ defaults:
 
 # baseurl: ""
 permalink: /blog/:slug
-timezone: America/New_York
+timezone: Europe/London
 future: false
 
 exclude:
 - README.md
 - LICENSE.md
+- _exclude/
 
 exclude: [vendor]
 
 Blog: /blog
-Life: /life
+Misc: /misc
 
 # Add general links to site pages here
 links:

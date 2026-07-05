@@ -2,7 +2,14 @@
 <html lang="en" dir="ltr">
     
 <header>
-    <h2 class="title">{{ site.title }}</h2>
+    <hgroup>
+        <h2 class="title">{{ site.title }}</h2>
+        <h4 class="subtitle">
+            <span style="text-decoration: line-through;">{{ site.subtitle[0] }}</span>
+            <br/>
+            <span>{{ site.subtitle[1] }}</span>
+        </h4>
+    </hgroup>
     <nav>
         <p>
             <a href="{{ site.url }}">Home</a> 
