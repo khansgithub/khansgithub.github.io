@@ -14,49 +14,56 @@
 :root {
     /* Layout */
     --width: 720px;
-    
+
     /* Typography */
     --font-main: 'IBM Plex Mono', monospace;
     --font-secondary: 'IBM Plex Mono', monospace;
     --font-monospace: 'IBM Plex Mono', monospace;
     --font-scale: 0.9em;
-    
+
     /* Spacing */
     --spacing-xs: 5px;
     --spacing-sm: 10px;
     --spacing-md: 20px;
     --spacing-lg: 40px;
     --spacing-xl: 60px;
-    
+
     /* Border radius */
     --radius-sm: 3px;
     --radius-md: 5px;
-    
+
     /* Transitions */
     --transition-fast: 0.2s;
     --transition-normal: 0.3s;
-    
+
     /* Z-index scale */
     --z-dropdown: 200;
     --z-modal: 1000;
-    
+
     /* Monochrome Dark Theme Colors */
-    --background-color: #0e0e0e;
-    --heading-color: #f0f0f0;
-    --text-color: #c0c0c0;
-    --link-color: #d0d0d0;
-    --visited-color: #888888;
-    --main-color: #555555;
-    --code-background-color: #1a1a1a;
-    --code-color: #e0e0e0;
-    --blockquote-color: #666666;
-    
+    --background-color: hsl(0, 0%, 12%);
+    --text-color: hsl(0, 0%, 88%);
+    /* Base white reference */
+    --heading-color: hsl(0, 0%, 98%);
+    --link-color: hsl(0, 0%, 100%, 0.94);
+    /* Slightly brighter than text */
+    --visited-color: hsl(0, 0%, 65%);
+    /* Much dimmer than text */
+    --main-color: hsl(0, 0%, 50%);
+    /* Neutral, gray */
+    --code-background-color: hsl(0, 0%, 8%);
+    /* Darker than background */
+    --code-color: hsl(0, 0%, 92%);
+    /* Slightly lighter than text */
+    --blockquote-color: hsl(0, 0%, 62%);
+    /* Muted, lower contrast to text */
+
     /* Interactive colors derived from theme */
     --hover-color: #ffffff;
     --hover-bg: #333333;
     --border-color: var(--blockquote-color);
     --shadow-color: rgba(0, 0, 0, 0.4);
-    
+
     /* Glow effects for interactive elements */
     --glow-color-light: rgba(255, 255, 255, 0.08);
     --glow-color-medium: rgba(255, 255, 255, 0.15);
@@ -74,6 +81,8 @@ body {
     max-width: var(--width);
     text-align: left;
     background-color: var(--background-color);
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%224%22%20height%3D%224%22%20viewBox%3D%220%200%204%204%22%3E%3Cpath%20fill%3D%22%230e0e0e%22%20d%3D%22M0%200h2v2H0zM2%202h2v2H2z%22%2F%3E%3C%2Fsvg%3E);
+    background-repeat: repeat;
     word-wrap: break-word;
     overflow-wrap: break-word;
     line-height: 1.5;
@@ -84,12 +93,18 @@ body {
    TYPOGRAPHY
    ============================================================================= */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-main);
     color: var(--heading-color);
 }
 
-strong, b {
+strong,
+b {
     color: var(--heading-color);
 }
 
@@ -157,7 +172,7 @@ footer {
     font-size: 0.85em;
 }
 
-footer > span:has(a[href="https://bearblog.dev"]) {
+footer>span:has(a[href="https://bearblog.dev"]) {
     display: none;
 }
 
@@ -220,7 +235,8 @@ table {
     border-spacing: 0;
 }
 
-th, td {
+th,
+td {
     padding: 6px 13px;
     border: 1px solid var(--border-color);
     font-size: 1em;
@@ -271,7 +287,10 @@ button {
    FORM ELEMENTS
    ============================================================================= */
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -289,7 +308,8 @@ label {
     font-weight: bold;
 }
 
-input, textarea {
+input,
+textarea {
     margin: 0 0 var(--spacing-sm);
     padding: var(--spacing-xs) var(--spacing-sm);
     color: var(--text-color);
@@ -298,7 +318,8 @@ input, textarea {
     border-radius: var(--radius-md);
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     outline: none;
     border-color: var(--heading-color);
 }
@@ -311,8 +332,8 @@ textarea {
     width: 95%;
 }
 
-input[type=button], 
-input[type=submit], 
+input[type=button],
+input[type=submit],
 input[type=reset] {
     margin: 0 0 var(--spacing-md);
     padding: 7px;
@@ -345,4 +366,3 @@ input[type=reset]:hover {
     background: var(--hover-bg);
     color: var(--hover-color);
 }
-  
