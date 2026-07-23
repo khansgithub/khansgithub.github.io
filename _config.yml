@@ -7,7 +7,7 @@ sub_title:
   - mediore alright code writer
 description: blog of a mediore alright code writing person
 # baseurl: "/jekyllBear" # the subpath of your site, e.g. /blog/
-url: "https://khansgithub.github.io/" # the base hostname & protocol for your site
+url: "https://khansgithub.github.io" # the base hostname & protocol for your site
 # host: 0.0.0.0
 
 
@@ -52,12 +52,7 @@ permalink: /blog/:slug
 timezone: Europe/London
 future: false
 
-exclude:
-- README.md
-- LICENSE.md
-- _exclude/
-
-exclude: [vendor]
+exclude: [README.md, LICENSE.md, _exclude, vendor, _sessions]
 
 Blog: /blog
 Misc: /misc

@@ -1,0 +1,4 @@
+---
+slug: fuckup
+name: Fuckup
+---

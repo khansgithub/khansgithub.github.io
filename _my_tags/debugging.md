@@ -1,0 +1,4 @@
+---
+slug: debugging
+name: Debugging
+---

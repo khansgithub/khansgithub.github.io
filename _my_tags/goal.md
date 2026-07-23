@@ -1,0 +1,4 @@
+---
+slug: goal
+name: Goal
+---
