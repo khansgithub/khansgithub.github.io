@@ -5,7 +5,7 @@
    FONTS & IMPORTS
    ============================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 /* =============================================================================
    CSS CUSTOM PROPERTIES (VARIABLES)
@@ -16,9 +16,9 @@
     --width: 720px;
 
     /* Typography */
-    --font-main: 'IBM Plex Mono', monospace;
-    --font-secondary: 'IBM Plex Mono', monospace;
-    --font-monospace: 'IBM Plex Mono', monospace;
+    --font-main: "IBM Plex Mono", monospace;
+    --font-secondary: "IBM Plex Mono", monospace;
+    --font-monospace: "IBM Plex Mono", monospace;
     --font-scale: 0.9em;
 
     /* Spacing */
@@ -172,7 +172,7 @@ footer {
     font-size: 0.85em;
 }
 
-footer>span:has(a[href="https://bearblog.dev"]) {
+footer > span:has(a[href="https://bearblog.dev"]) {
     display: none;
 }
 
@@ -207,23 +207,158 @@ blockquote {
    CODE & SYNTAX HIGHLIGHTING
    ============================================================================= */
 
-code {
+/* Inline code only */
+:not(pre) > code {
     font-family: var(--font-monospace);
-    padding: 2px;
+    padding: 2px 5px;
     background-color: var(--code-background-color);
     color: var(--code-color);
     border-radius: var(--radius-sm);
 }
 
-.highlight,
-.code {
-    padding: 1px 15px;
-    background-color: var(--code-background-color);
-    color: var(--code-color);
+/* Code blocks */
+.highlight {
+    font-family: var(--font-monospace);
+    background: #1e1e1e;
+    color: #d4d4d4;
     border-radius: var(--radius-sm);
-    margin-block-start: 1em;
-    margin-block-end: 1em;
+    padding: 1rem;
+    margin-block: 1em;
     overflow-x: auto;
+    font-size: 0.95em;
+    line-height: 1.55;
+}
+
+.highlight pre {
+    margin: 0;
+}
+
+.highlight code {
+    background: none;
+    padding: 0;
+}
+
+/* Comments */
+.highlight .c,
+.highlight .cm,
+.highlight .c1,
+.highlight .ch,
+.highlight .cp {
+    color: #6a9955;
+    font-style: italic;
+}
+
+/* Keywords:
+   const, let, def, class, import, if, for, while, return, etc.
+*/
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr {
+    color: #569cd6;
+}
+
+/* Built-ins:
+   print, len, console, JSON, etc.
+*/
+.highlight .nb {
+    color: #4ec9b0;
+}
+
+/* Identifiers / variable names */
+.highlight .n,
+.highlight .nx {
+    color: #d4d4d4;
+}
+
+/* Functions */
+.highlight .nf,
+.highlight .fm {
+    color: #dcdcaa;
+}
+
+/* Decorators / attributes:
+   @app.route, @Injectable, etc.
+*/
+.highlight .nd {
+    color: #dcdcaa;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sb,
+.highlight .sh {
+    color: #ce9178;
+}
+
+/* Numbers */
+.highlight .m,
+.highlight .mi,
+.highlight .mf,
+.highlight .mh {
+    color: #b5cea8;
+}
+
+/* Classes and types:
+   User, Interface, Promise, Dict, etc.
+*/
+.highlight .nc,
+.highlight .kt {
+    color: #4ec9b0;
+}
+
+/* Constants */
+.highlight .kc {
+    color: #569cd6;
+}
+
+/* JSON keys */
+.highlight .nl {
+    color: #9cdcfe;
+}
+
+/* Variables:
+   $HOME, environment variables, shell variables
+*/
+.highlight .nv {
+    color: #9cdcfe;
+}
+
+/* Operators */
+.highlight .o {
+    color: #d4d4d4;
+}
+
+/* Punctuation */
+.highlight .p {
+    color: #808080;
+}
+
+/* Regex */
+.highlight .sr {
+    color: #d16969;
+}
+
+/* Deleted / inserted diff styles */
+.highlight .gd {
+    color: #f44747;
+}
+
+.highlight .gi {
+    color: #b5cea8;
+}
+
+/* Scrollbar styling */
+.highlight::-webkit-scrollbar {
+    height: 8px;
+}
+
+.highlight::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
 }
 
 /* =============================================================================
@@ -332,9 +467,9 @@ textarea {
     width: 95%;
 }
 
-input[type=button],
-input[type=submit],
-input[type=reset] {
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
     margin: 0 0 var(--spacing-md);
     padding: 7px;
     font-family: var(--font-secondary);
@@ -347,9 +482,9 @@ input[type=reset] {
     transition: background var(--transition-fast) ease;
 }
 
-input[type=button]:hover,
-input[type=submit]:hover,
-input[type=reset]:hover {
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
     background: var(--heading-color);
 }
 
