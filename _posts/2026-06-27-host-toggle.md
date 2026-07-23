@@ -2,6 +2,7 @@
 title: "june 27"
 date: 2026-06-27
 tags: [word-game, debugging, learning, fuckup, shipping, ai, frustration, goal, rants, side-quest, typescript]
+layout: post
 ---
 
 _This is part of the [end-word](/blog/about-end-word) project — a multiplayer word game built with React and Supabase._
