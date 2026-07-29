@@ -9,7 +9,7 @@ layout: post
 
 It's a loose collection of automation tools, all orbiting around a friend's content creation needs. It started as an AI chatbot which listens to a KakaoTalk chat room, route messages through pipelines to generate AI responses and send them to KakaoTalk using the `agent-messenger` library. Bit by bit, I started adding unrelated tools to aid in different areas. The fundamental theme around the tools is building materials or workflows for ESL learning content.
 
-This project is **very heavily** driven and augmented by AI. The goal for this project was to just build tools that deliver, as fast as possible. My role has been mainly to understand the requirements, sketch the idea, have AI drive the development, and then assess for bugs. I built the initial AI chatbot, with the pipeline architecture and decoupled AI services. After that, I started rapidly iterating over ideas using AI and progressed with the rest of the suite. AI isn't great at more finessed work, especially on brownfield code, so I've refactored parts here and there manually.
+This project is **very heavily built and augmented by AI**. The goal for this project was to just build tools that deliver, as fast as possible. My role has been mainly to understand the requirements, sketch the idea, have AI drive the development, and then assess for bugs. I built the initial AI chatbot, with the pipeline architecture and decoupled AI services. After that, I started rapidly iterating over ideas using AI and progressed with the rest of the suite. AI isn't great at more finessed work, especially on brownfield code, so I've refactored parts here and there manually.
 
 - **AI chatbot** - an FAQ assistant chatbot for my friend's brand
 - **News Bot** - a workflow that downloads YouTube videos, transcribes and generates a summary given a very specific format and criteria
@@ -90,9 +90,45 @@ This was eventually abandoned because agent-messenger turned out to work directl
 
 Every service has a mock counterpart for development - `MockOllamaService`, `MockAuthService`, `MockChatService`, `MockMonitorService`, `MockPostNewsAppFeedProvider`, etc. Enabled via `config.json` → `env.mock = true`. MockOllamaService can use real Ollama or return canned responses.
 
-## Config System
+## Config System (WIP)
 
 Single `config.json` (Zod-validated) with sections for environment (API keys, ports), pipeline-specific configs (`faqBot`, `newsBot`), services (`news`, `grammar`), and quick-tasks (`postNews`, `grammar`). Pipeline-to-chatroom bindings in `pipeline-config.json`. Config resolution: `quick_tasks.*` → `services.*` → root keys.
+
+## Snapshots
+
+![login screen](/assets/images/about-kakao-agent-login.png)
+initially presented with a login screen which does the `agent-messenger` auth.
+since the initial usecase was for this to be just a chatbot, the login process is heavily coupled with kakaotalk/agent-messenger.
+adding a "skip" was a quick and dirty way to access the homescreen, without requiring auth for kakaotalk.
+
+![homescreen](/assets/images/about-kakao-agent-homescreen.png)
+the UI evolved to draw a separation between the chatbot and the "quicktasks".
+initially coined quicktask, as you can reach for the tool right from the homescreen.
+
+![chatbot control panel](/assets/images/about-kakao-agent-chatbot.png)
+that chatbot interface running in mock mode. options to select which chatrooms to work on, and which pipelines are enabled for each.
+
+![chatbot running (mock) - AI generated responses](/assets/images/about-kakao-agent-chatbot-running.png)
+the generated responses appear on the right panel - the faqBot generates AI responses whilst the newsBot generates AI summarised video summaries
+
+![post news quicktask ui](/assets/images/about-kakao-agent-post-news.png)
+the interface for the "post-news" quick task. exposing only the most necessary parameters.
+
+![dialogue builder - parse audio](/assets/images/about-kakao-agent-dialogue-parse.png)
+the dialogue is used to build shadowing videos.
+the inputs are audio files of conversation dialogues.
+the tool uses ffmpeg + whisper to parse the speech into segments/bubbles.
+
+![dialogue builder - edit segment bubble](/assets/images/about-kakao-agent-dialogue-edit.png)
+there is a basic level of modification supported for the bubbles.
+it's necessary to be able to manually change the text as whisper can transcribe things incorrectly.
+
+![dialogue builder - split segment](/assets/images/about-kakao-agent-dialogue-split.png)
+the bubbles can be manually split into individual segments.
+
+![dialouge builder - export audio by speaker](/assets/images/about-kakao-agent-dialogue-export.png)
+it's important to be able to export the artifacts separately, so they can be edited in a video editor.
+
 
 ## Project Posts
 
