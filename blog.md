@@ -1,8 +1,8 @@
 ---
 layout: blog
 title: Blog
-description: Here be writings
+description:
 permalink: /blog
 ---
 
-Still populating this space. Writings appear when they're ready.
+Still populating this space...

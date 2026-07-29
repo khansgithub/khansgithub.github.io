@@ -1,4 +1,4 @@
 ---
-slug: side-quest
-name: Side Quest
+slug: derail
+name: Derailed
 ---

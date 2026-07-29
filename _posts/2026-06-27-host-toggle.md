@@ -1,7 +1,7 @@
 ---
 title: "june 27"
 date: 2026-06-27
-tags: [word-game, debugging, learning, fuckup, shipping, ai, frustration, goal, rants, side-quest, typescript]
+tags: [word-game, debugging, learning, fuckup, shipping, ai, frustration, goal, rants, derail, typescript]
 layout: post
 ---
 
@@ -9,7 +9,7 @@ _This is part of the [end-word](/blog/about-end-word) project — a multiplayer 
 
 ## [end-word]
 
-in the 끝말잇기/word chain game, a room is created by a host. This makes the host automatically the 1st player in the round. The feature to add was to allow the host to toggle between being a spectator (watch-only) and player. Otherwise creating the room forces the host to play the game too, which is dumb. lol.
+in the 끝말잇기/word chain game, a room is created by a host. this makes the host automatically the 1st player in the round. The feature to add was to allow the host to toggle between being a spectator (watch-only) and player. Otherwise creating the room forces the host to play the game too, which is dumb. lol.
 
 ![host room creation flow](/assets/images/2026-06-27-2.gif)
 
@@ -21,7 +21,7 @@ _however players joining the room can choose to spectate or play_
 
 initially I gave the task to opencode + deepseek to do. however, compared to cursor the harness isn't as sophisticated, so the implementation only delivered 70% of what was needed. I created the UI for the toggling and wanted the AI to wire the server logic, but it ended up redoing the UI and also botched the server implementation.
 
-[goal] fix the host <> spectator toggle.
+<span class="inline-tag i-t-goal">[goal]</span> fix the host <> spectator toggle.
 
 there were a bunch of issues with toggling between host and spectator. the biggest issue was that I didn't even know what was happening, since (drumroll) I didn't write jackshit :D 
 
@@ -61,7 +61,7 @@ test(roomFlowTestNames.testName, async ({ browser, request }, testInfo) => {
 
 ```
 
-[side-quest] the test logic for every test is wrapped in this try/catch block. kinda gross no? especially when there's a dozen or so tests. so I thought maybe I can just do a quiiiiick little refactor before I continue with the main quest of fixing the host/spectator toggling. hah...
+<span class="inline-tag i-t-derail">[derail]</span> the test logic for every test is wrapped in this try/catch block. kinda gross no? especially when there's a dozen or so tests. so I thought maybe I can just do a quiiiiick little refactor before I continue with the main quest of fixing the host/spectator toggling. hah...
 
 so I asked gpt what's the standard way of implementing something like a decorator in typescript.
 
@@ -90,7 +90,7 @@ idk if it was good or not, but it seems like it should work. right...?
 
 and so the annoyances started stacking...
 
-[side-quest] fuck knows what was wrong with cursor, but the auto format wasn't working. that's pretty irritating. I spent a bit tinkering with the ide (the last thing you want to do... when you're taking a *quick detour* before addressing the **actual problem**). didn't work. I said fuck it and opened zed instead.
+<span class="inline-tag i-t-derail">[derail]</span> fuck knows what was wrong with cursor, but the auto format wasn't working. that's pretty irritating. I spent a bit tinkering with the ide (the last thing you want to do... when you're taking a *quick detour* before addressing the **actual problem**). didn't work. I said fuck it and opened zed instead.
 
 i run the test using the npm command, but the test just wouldn't work. it just kept skipping...?! super strange. I spent quite some time trying to figure out what on earth is going on. why is it just skipping the test. what did I do wrong in the refactor that just messed up everything. maybe an hour or so later, aha. I used the wrong npm command :D
 
@@ -106,7 +106,7 @@ in the zed file browser panel, there are coloured indicators to show different t
 
 ![zed error](/assets/images/2026-06-27-1.png)
 
-[side-quest] and so... I started going through all the files. there were errors that the LSP was showing me (which didn't appear in cursor) around react. a few different ones. some were simple to resolve, but the biggest pain in the arse was about not using `setState` inside of a `useEffect`. I have no fucking idea what it's about. but they were errors. 
+<span class="inline-tag i-t-derail">[derail]</span> and so... I started going through all the files. there were errors that the LSP was showing me (which didn't appear in cursor) around react. a few different ones. some were simple to resolve, but the biggest pain in the arse was about not using `setState` inside of a `useEffect`. I have no fucking idea what it's about. but they were errors. 
 
 ![set state in effect](/assets/images/2026-06-27-5.png)
 _react-hooks/set-state-in-effect. I understood that it didn't want me to use setState inside of an effect, but no matter how much I search/ask gpt, I just didn't get why..._
