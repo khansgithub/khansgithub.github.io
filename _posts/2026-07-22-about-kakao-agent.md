@@ -2,6 +2,7 @@
 title: "About: kakao-agent"
 date: 2026-07-22
 tags: [kakao-talk, project-overview]
+layout: post
 ---
 
 ## What is kakao-agent?

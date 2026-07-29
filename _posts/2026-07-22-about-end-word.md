@@ -2,6 +2,7 @@
 title: "About: end-word"
 date: 2026-07-22
 tags: [word-game, project-overview]
+layout: post
 ---
 
 ## What is end-word?
