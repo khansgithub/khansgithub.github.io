@@ -63,6 +63,7 @@ The project being called `kakao-agent`, is not very true to its name right now. 
 | Client      | React 19 + Tailwind CSS + Vite + Zustand                | Dashboard: chat monitor, pipeline config, quick-task UIs |
 | AI          | Ollama (cloud models) + Google Gemini (not really used) | Response generation, summarization, grammar analysis     |
 | Media tools | Whisper, yt-dlp, ffmpeg                                 | Transcription, download, video/audio editing             |
+
 ## Mock System
 This is the single biggest win for me in this project - implementing a mocking system early (thank you AI) made development faster and more agile. Every service has a mock counterpart for development - `MockOllamaService`, `MockAuthService`, `MockChatService`, `MockMonitorService`, mock feed/media/publisher
 ## Config System
