@@ -4,97 +4,59 @@ date: 2026-07-22
 tags: [kakao-talk, project-overview]
 layout: post
 ---
-
 ## What is kakao-agent?
 
-It's a loose collection of automation tools, all orbiting around a friend's content creation needs. It started as an AI chatbot which listens to a KakaoTalk chat room, route messages through pipelines to generate AI responses and send them to KakaoTalk using the `agent-messenger` library. Bit by bit, I started adding unrelated tools to aid in different areas. The fundamental theme around the tools is building materials or workflows for ESL learning content.
+A collection of various automation tools, built for a friend's content creation efforts. The general purpose these serve, is to automate manual processes around: creating content, publishing content, and engaging the community.
 
-This project is **very heavily built and augmented by AI**. The goal for this project was to just build tools that deliver, as fast as possible. My role has been mainly to understand the requirements, sketch the idea, have AI drive the development, and then assess for bugs. I built the initial AI chatbot, with the pipeline architecture and decoupled AI services. After that, I started rapidly iterating over ideas using AI and progressed with the rest of the suite. AI isn't great at more finessed work, especially on brownfield code, so I've refactored parts here and there manually.
+Initially the project was focused on building an FAQ chatbot, build around the incredible `agent-messenger` project. It provides an interface to configure the chatbot, and an architecture that allows for different response pipelines - one of which being an AI response reply pipeline. Over time, it became convenient to use it as a platform to house other tools.
 
-- **AI chatbot** - an FAQ assistant chatbot for my friend's brand
-- **News Bot** - a workflow that downloads YouTube videos, transcribes and generates a summary given a very specific format and criteria
-- **Quick tasks** - a collection of tools with: API interfaces, job caching, individual job handling
-- **Post-news API (quicktask)** - an API interface to the `news bot`, with a quicktask browser interface. Provides the ability to configure which YouTube channels to pull videos from, a max number of videos to fetch from each and maximum video length criteria amongst other parameters
-- **Post-news-to-github API** - an extension of the post-news API, where instead of sending the summary to KakaoTalk, it's pushed to a github repository
-- **Dialogue builder (quicktask)** - Multi-track audio workspace with speech segmentation, per-segment transcription, and ASS subtitle export. Used to automate parts of building a language learning shadowing video series.
-- **Video builder (quicktask)** - Takes a background image, subtitle JSON, and audio tracks → generates styled ASS subtitles → encodes final MP4
-- **Transcription tool (quicktask)** - YouTube URL or file upload → Whisper → plain text or SRT
-- **Grammar post generator (quicktask)** - Takes 3 YouTube URLs at different CEFR levels, transcribes each, analyses grammar patterns, generates a structured language learning post
+This project is **very heavily built and augmented by AI**. The goal is to build tools that are useful, as fast as possible. My role has been mainly to understand the requirements, build a plan for automation, and have AI drive the development. On average the AI implementation is 90% correct, and the remain 10% requires manual development, refactoring and debugging.
+## Tools and features
+- **Chatbot** - essentially a wrapper around `agent-messenger`, with modular pipelines:
+	- **FAQ chatbot** - an AI response pipeline; uses a system prompt trained on brand information to produce AI responses, to questions asked in the chatroom room (tagged at the bots name, for example `@FAQ`)
+	- **News Bot** - a response pipeline that posts news cards using the `post-news` service, when prompted
+- **Services** - workflows are modelled as services which. They are internal but provide a module level API to interact with.
+	- **New Service** - a workflow which creates short AI summaries of English news channel YouTube videos, focusing on translating them and extract key English keywords for studying.
+	- **Grammar Service** - a workflow which produces an AI generated worksheet, focused on grammar points which appear in referenced YouTube videos, with sections focused on different CEFR language levels 
+	- **Speech Segments** - a workflow to build the audio for roleplay practise videos. The input is audio files, which contains the dialogue of each character. These are then transcribed and broken down into segments, which the user then re-arranges into a back and forth dialogue. The output is the separate audio files with sentences positioned in time for a two-way conversation, and subtitles for the transcription.
+	- **Naver Post Automation** - a workflow to build and publish educational posts to the Naver blog platform. The input is, loosely structured text which is then transformed by AI to fit a specific structure depending on the type of post to produce. Uses a chrome extenstion to extract the necessary cookies.
+- **Quick tasks** - user facing collection of all the various tools, exposes them on the `/quick-task` API endpoint, and wraps each tool in a `job` to provide lifecycle tracking.
+	- **Post News** - built around `news-service`, the quick task provides an API + browser interface to the worfklow, to be able to configure the parameters. Also importantly provides 3 post-creation actions:
+		- push generated news to github repository
+		- push generated news to kakao chatroom
+		- generate social media text from generated news
+	- **Speech Segments** - interface for the `Speech Segments` server; provides interface for uploading audio, editing + splicing transcribed speech blocks, rearrange blocks and export of the assets.
+	- **Video Build** - a tool made whilst trying to build a plan to automate the creation of shadowing videos; the tool takes assets and uses ffmpeg to output a video in a certain template. Not used as it didn't cover all the required use cases - currently experimenting with `hyperframes` instead
+	- **Transcribe** - tool to transcribe audio using `whisper`; YouTube URL or file upload → Whisper → plain text or SRT
+	- **Grammar Post** - interface for `Grammar Service`; takes YouTube URLs at different CEFR levels, transcribes each, analyses grammar patterns, generates a structured language learning post
+	- **Naver Post** - interface for the `Naver Post Automation` service; provides interface to pass in the initial text for the post and the necessary credentials for the blog. The tool uses AI to build a structured blog post from the data, and publishes the post. 
 
-The project, as named `kakao-agent`, is not very true to its name right now. At present it's a platform housing various tools. The main aspects are:
+The project being called `kakao-agent`, is not very true to its name right now. It's a platform housing various tools. The main aspects are:
   - workflows around `agent-messenger` to automate sending / reacting to messages on KakaoTalk
-  - workflows around using AI/ollama to enrich data
-  - workflows around orchestrating media tools (`ytdlp`, `whisper-cli`, `ffmpeg`) to build media content
-
-## Architecture
-
-The platform has two faces:
-
-**1. Chatbot (Bot Settings)** - A real-time AI agent. The MonitorService listens to chat rooms via `agent-messenger`. When a message arrives, the pipeline host checks which pipelines are assigned to that room, evaluates trigger conditions, runs rate-limit policies, and hands off to the AI provider (Ollama or Gemini). Responses stream back through WebSocket to the React dashboard and are posted to the chat via agent-messenger.
-
-**2. Quick Tasks** - Job-based automation tools. They're interacted through the React UI, and they process in the background with progress tracking. Each task has its own service, config, and job persistence:
-
-```
-Quick Tasks (job flows):
-  Client POST → Express route → Service.startJob()
-    → NewsSummaryService  (YouTube RSS → audio → Whisper → AI summary)
-    → GrammarService      (3 YouTube URLs → transcribe → grammar analysis → post)
-    → TranscribeService   (audio/video → Whisper → text/SRT)
-    → SpeechSegmentsService (multi-track audio workspace → dialogue edit)
-    → VideoBuildService   (image + subtitles JSON + audio → ASS → MP4)
-```
-
-Both faces share the same Express server, AI providers, config system, and React dashboard - but they serve different purposes. The chatbot is always-on and reactive; quick tasks are on-demand and batch-oriented.
+  - workflows around using AI to enrich and transform data
+  - workflows around orchestrating media tools (`ytdlp`, `whisper-cli`, `ffmpeg`) to build  content
 
 ## Components
 
-| Layer | Stack | Purpose |
-|-------|-------|---------|
-| Server | Node.js + Express 5 + TypeScript (ESM) | HTTP API, WebSocket, pipeline host, all services |
-| Client | React 19 + Tailwind CSS + Vite + Zustand | Dashboard: chat monitor, pipeline config, quick-task UIs |
-| AI | Ollama (primary, local/cloud) + Google Gemini | Response generation, summarization, grammar analysis |
-| STT | Whisper (local) | Speech-to-text for YouTube videos / audio files |
-| Protocol | agent-messenger npm (v2.9+) | KakaoTalk integration - handles login, listening, and messaging |
-| Pipeline | Custom pipeline host (condition → policies → handler) | Message routing with per-chat pipeline bindings |
-
-## Two Pipelines
-
-**faqBot** - Triggered by `@faq_bot` mentions. Uses the FAQ system prompt to answer questions about the content brand. Response is grounded in a knowledge table of related blog posts with mandatory link references.
-
-**newsBot** - Triggered by `@news_bot` mentions. Runs `NewsSummaryService` to download latest videos from configured YouTube channels, transcribes with Whisper, summarizes with AI, and returns the summaries as KakaoTalk messages.
-
-## Quick Tasks
-
-| Task | What It Does |
-|------|-------------|
-| **Post News** | Fetches YouTube channels via RSS → downloads audio → transcribes → summarizes → posts to KakaoTalk |
-| **Post News (git)** | Same pipeline but pushes summaries to a git repo instead of KakaoTalk |
-| **Post Grammar** | Takes 3 YouTube URLs (B1, B2, C1 CEFR levels) → transcribes each → sends to AI for grammar pattern analysis → generates structured grammar post |
-| **Transcribe** | YouTube URL or file upload → audio download → Whisper → plain text or SRT |
-| **Speech Segments** | Multi-track audio workspace: upload audio, silence-based segmentation, per-segment transcription, ASS subtitle export, timeline export |
-| **Video Build** | Background image + subtitles JSON + audio tracks → ASS subtitle file → MP4 with optional soft subtitles |
-
-## AI Providers
-
-**OllamaService** - Communicates with local or cloud Ollama. Default model: `minimax-m2.7:cloud`. Configurable host, API key, temperature, timeout. Automatic fallback to Ollama Cloud when local unreachable. Parallel chat queue management. Anti-poison system prompt.
-
-**GeminiService** - Uses `@google/genai`. Default model: `gemini-2.0-flash`. Same anti-poison prompt as Ollama.
-
-## The Relay Server Dead End
-
-Built a relay server (Bun, port 3000) + Kotlin/JVM relay client to run the post-news task on a mobile device. The idea: the relay server runs agent-messenger's KakaoTalk protocol logic (auth, LOCO state machines) without doing network I/O - it emits JSON commands (`Http`, `TcpConnect`, `TcpSend`) for the Kotlin client to execute against real Kakao servers.
-
-This was eventually abandoned because agent-messenger turned out to work directly on Android. The relay server still exists in `agent-messenger/src/relay/` but the post-news quick task runs natively on the phone via Termux.
-
+| Layer       | Stack                                                   | Purpose                                                  |
+| ----------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| Server      | Node.js + Express 5 + TypeScript (ESM)                  | HTTP API, WebSocket, pipeline host, all services         |
+| Client      | React 19 + Tailwind CSS + Vite + Zustand                | Dashboard: chat monitor, pipeline config, quick-task UIs |
+| AI          | Ollama (cloud models) + Google Gemini (not really used) | Response generation, summarization, grammar analysis     |
+| Media tools | Whisper, yt-dlp, ffmpeg                                 | Transcription, download, video/audio editing             |
 ## Mock System
+This is the single biggest win for me in this project - implementing a mocking system early (thank you AI) made development faster and more agile. Every service has a mock counterpart for development - `MockOllamaService`, `MockAuthService`, `MockChatService`, `MockMonitorService`, mock feed/media/publisher
+## Config System
+The configuration system isn't perfect, however is working in its current state. 
+A single `config.json` contains all user-level parameters, with sections for environment (API keys, ports), pipeline configs, services, and quick-tasks.
 
-Every service has a mock counterpart for development - `MockOllamaService`, `MockAuthService`, `MockChatService`, `MockMonitorService`, `MockPostNewsAppFeedProvider`, etc. Enabled via `config.json` → `env.mock = true`. MockOllamaService can use real Ollama or return canned responses.
-
-## Config System (WIP)
-
-Single `config.json` (Zod-validated) with sections for environment (API keys, ports), pipeline-specific configs (`faqBot`, `newsBot`), services (`news`, `grammar`), and quick-tasks (`postNews`, `grammar`). Pipeline-to-chatroom bindings in `pipeline-config.json`. Config resolution: `quick_tasks.*` → `services.*` → root keys.
-
+There isn't great type saftey for the configuration file, however it is mid-refactor, implementing Zod to generate config schemas.
+## Harness
+I've shoved all AI conversation derived information in to `docs/`. `rules.md` is quite important as I use it to patch common trip-ups that I face when working with agents on this codebase.
+I also use [lemma](https://github.com/xenitV1/lemma) to provide persistent memory storage when using OpenCode.
 ## Snapshots
+
+_Screenshots below are from the current UI. Re-capture before treating them as current — the app has moved since July._
 
 ![login screen](/assets/images/about-kakao-agent-login.png)
 initially presented with a login screen which does the `agent-messenger` auth.
@@ -129,19 +91,22 @@ the bubbles can be manually split into individual segments.
 ![dialouge builder - export audio by speaker](/assets/images/about-kakao-agent-dialogue-export.png)
 it's important to be able to export the artifacts separately, so they can be edited in a video editor.
 
+![naver post automation](/assets/images/about-kakao-agent-naver-post.png)
+interface for the naver post automation
+
 
 ## Project Posts
 
-- [2026-07-05: Relay server dead-end, broken tests, timer saga](/blog/2026-07-05)
-- [2026-07-10: Whisper crash fix, post-news pipeline, metadata fix](/blog/2026-07-10)
-- [2026-07-11: NewsSummaryService refactor, generic type struggles](/blog/2026-07-11)
-- [2026-07-13: Generics breakthrough, android git clone (whitespace PAT)](/blog/2026-07-13)
-- [2026-07-14: Android app debugging, login flow, termux-chroot](/blog/2026-07-14)
-- [2026-07-15: GUI app (Fyne fail → Tauri win), frame-splitter tool](/blog/2026-07-15)
-- [2026-07-16: Wiring Tauri to server, architecture written down](/blog/2026-07-16)
-- [2026-07-17: Tauri as mini-browser, build succeeds](/blog/2026-07-17)
-- [2026-07-19: Friend's Mac setup, termux-chroot, everything crashing](/blog/2026-07-19)
-- [2026-07-20: Folder structure, exit code 127, yt-dlp 403 fix](/blog/2026-07-20)
-- [2026-07-21: Pipeline working end-to-end, Chrome extension, fraud feeling](/blog/2026-07-21)
+- [2026-07-05: Relay server and tests](/blog/2026-07-05)
+- [2026-07-10: Whisper, post-news pipeline, and metadata](/blog/2026-07-10)
+- [2026-07-11: NewsSummaryService refactor](/blog/2026-07-11)
+- [2026-07-13: Generics and Android Git setup](/blog/2026-07-13)
+- [2026-07-14: Android debugging and login flow](/blog/2026-07-14)
+- [2026-07-15: Tauri app and frame-splitter](/blog/2026-07-15)
+- [2026-07-16: Tauri and server integration](/blog/2026-07-16)
+- [2026-07-17: Tauri browser and build](/blog/2026-07-17)
+- [2026-07-19: Mac setup and Termux](/blog/2026-07-19)
+- [2026-07-20: Project structure and yt-dlp](/blog/2026-07-20)
+- [2026-07-21: End-to-end pipeline and Chrome extension](/blog/2026-07-21)
 
 Repository: not yet public. Will link here when available.
