@@ -524,6 +524,24 @@ span.inline-tag ~ p{
     display: inline;
 }
 
+.ai-summary {
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--code-background-color);
+    padding: var(--spacing-md);
+    margin: 0 0 var(--spacing-md);
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.ai-summary > :first-child {
+    margin-top: 0;
+}
+
+.ai-summary > :last-child {
+    margin-bottom: 0;
+}
+
 /* =============================================================================
    LIGHTBOX
    ============================================================================= */

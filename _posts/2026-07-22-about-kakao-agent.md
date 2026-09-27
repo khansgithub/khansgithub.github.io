@@ -4,6 +4,25 @@ date: 2026-07-22
 tags: [kakao-talk, project-overview]
 layout: post
 ---
+
+<div class="ai-summary" markdown="1">
+The post describes **kakao-agent**, a growing automation platform originally built around a KakaoTalk FAQ chatbot but now covering a much broader set of content-creation workflows.
+
+ Its main capabilities include:
+
+ - **AI chatbot pipelines** for FAQs and news summaries.
+- **YouTube/news processing**, including transcription, summarisation, translation, and grammar-learning material.
+- **Audio tools** using Whisper and FFmpeg to turn dialogue recordings into editable, timed speech segments and subtitles.
+- **Naver blog automation**, transforming rough text into structured posts and publishing them.
+- **Quick tasks** that expose these workflows through a web interface/API, including generating news posts and social-media copy.
+
+ Technically, it uses **Node.js/Express/TypeScript** on the server and **React/Tailwind/Vite/Zustand** for the UI, with **Ollama** for AI and tools such as Whisper, yt-dlp and FFmpeg for media processing. 
+
+ A notable theme is **AI-assisted development**: the author estimates AI produces about 90% of implementations, with manual work still needed for debugging, refactoring and edge cases. Mock services and an AI-oriented documentation/harness system are highlighted as particularly useful for rapid development.
+
+ **In short:** it has evolved from a KakaoTalk bot into a general-purpose, AI-powered content automation platform.
+</div>
+
 ## What is kakao-agent?
 
 A collection of various automation tools, built for a friend's content creation efforts. The general purpose these serve, is to automate manual processes around: creating content, publishing content, and engaging the community.
