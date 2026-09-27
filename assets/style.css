@@ -534,6 +534,16 @@ span.inline-tag ~ p{
     color: var(--text-color);
 }
 
+.ai-summary::before {
+    content: "AI SUMMARY";
+    display: block;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--visited-color);
+    margin-bottom: var(--spacing-sm);
+}
+
 .ai-summary > :first-child {
     margin-top: 0;
 }
