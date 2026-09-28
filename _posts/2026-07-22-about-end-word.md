@@ -7,69 +7,61 @@ layout: post
 
 ## What is end-word?
 
-A multiplayer word-chain game (끝말잇기) that doubles as a vocabulary trainer. Players take turns submitting words — each word must start with the last letter of the previous word. A timer counts down per turn; when it expires, you die and the game ends. Every word played displays its definition in both English and Korean, turning each round into a micro-lesson.
+A solo/multiplayer web game, where the players take turns submitting words which begin with the last letter of the previous word. There is a timer for how long a player has to submit a word, failing to submit a word or submitting an incorrect word costs a life. When all lives are gone, the player is out of the game. Supports both Korean and English.
 
-Built for Korean learners practicing English, English speakers learning Korean, or friends playing together across skill levels.
+Primarily built for English/Korean language learners to practise, in a fun and competitive way.
 
-## Tech Stack
+Still in active development. Currently:
+- refactoring out the hiding of the user ID in client-server communication
+- implementing the ability for the host to switch to a spectator when creating a game
 
-- **Frontend:** Next.js 16 (App Router) + React 19 + TypeScript + Tailwind CSS 4 + daisyUI
-- **Backend:** Next.js API routes + Supabase (Postgres, Auth, Realtime)
-- **Dictionary:** Python FastAPI + marisa-trie on Vercel serverless
-- **State:** Zustand (userStore, InputBox store) + React useReducer (game state)
-- **Realtime:** Supabase Realtime channels (one per room)
-- **Testing:** Playwright (E2E) + Vitest (unit) + MSW (API mocking)
-- **Logging:** LogLayer (`loglayer` package)
-- **Auth:** Two-tier — site lock (global password) + room invite bypass
+## Stack
+
+- **Frontend:** React, TypeScript, Tailwind, daisyUI, Zustand
+- **Backend:** Next.js, Supabase (Postgres, Auth, Realtime)
+- **Dictionary:** Korean: Python FastAPI + marisa-trie, English: WordNet dictionary
+- **Testing:** Playwright, Vitest, MSW
 - **Deploy:** Vercel
-
-## Architecture
-
-```
-Server (roomService.ts)
-  → persistRoomState() writes to Supabase Postgres
-  → broadcastRoomGameState() sends via Supabase Realtime channel
-    → useRoomChannel.ts receives via onUpdateRef
-      → GameV2.tsx applyRemote callback
-        → dispatch(gameStateUpdateClient) to reducer
-          → GameState.ts merges into local state
-```
-
-## Game Loop
-
-1. **Lobby** — Create a room (name, language, timer duration) or join by invite code. No accounts — just a name.
-2. **Waiting** — Host waits as players join. Invite link with copy button. Host starts when ready.
-3. **Playing** — Timer ticks. Submit a word starting with the match letter. Invalid words show feedback (no penalty, timer pauses). Correct words update the shared definitions panel. Turn passes.
-4. **Timer Death** — Timer expires → player dies. 2-player game: game over. 3+ players: turn skips to next alive player.
-5. **Game Over** — Winner declared. "Back to lobby."
 
 ## Features
 
-- Korean + English word chains with dictionary definitions (English meaning + Korean translation)
-- Configurable timer per room (lobby slider)
-- Spectator mode — watch without playing, see definitions accumulate
-- Emote reactions (8 options, 1500ms throttle, framer-motion animated)
-- Real-time typing draft broadcast (opponents see partial words forming)
-- Timer sync protocol (host broadcasts + client requests sync)
-- Hangul input validation FSM (Korean syllable composition)
-- Site-wide password gate + room invite bypass
-- Mock Supabase infrastructure for offline development
-- Player exit orchestrator (LEAVE, DISCONNECT, TIMEOUT, DISSOLVE, SPECTATOR)
-- Host auto-removes disconnected players (presence tracking)
+- Multiplayer (up to 4 players) and solo game support
+- Support for spectating games
+- Korean definitions for submitted words when playing in English mode
+- Configurable timer per room
+- In-game emote interactions
+- Real-time typing mirroring
+- Responsive UI, works on mobile displays
 
-## Key Lessons
+## Screenshots
 
-- **E2E tests are a trap.** They feel like coverage but are brittle, slow, and miss edge cases. The game reducer is a pure function and should have been unit-tested from day one.
-- **Reach for the library first.** Two weeks building a custom timer hook. `react-timer-hook` did it in 15 lines covering every edge case.
-- **Single source of truth for time.** Timer drift happened because the animation value and server value came from different sources. Letting the hook own the value fixed it.
-- **Atomic state transitions.** Two `dispatch` calls in one handler created non-deterministic state. Merging kill + turn-advance into a single reducer action (`killPlayerAndNextTurn`) fixed race conditions.
-- **Understanding the code is the real bottleneck.** AI wrote most of it — Supabase refactor, spectator mode, realtime channels. Not having a strong mental model makes debugging and testing harder than it needs to be.
+![lobby](/assets/images/about-end-word-lobby.png)
+lobby for creating or joining rooms. language and timer are configurable per room.
+
+![wait screen](/assets/images/about-end-word-wait-screen.png)
+waiting to start. players join via invite link before the host starts the game.
+
+![game screen](/assets/images/about-end-word-game-screen.png)
+core gameplay - submit a word starting with the match letter before the timer runs out.
+
+![submitting word](/assets/images/about-end-word-submitting.png)
+word validation on submit, checked against the dictionary.
+
+![word definition](/assets/images/about-end-word-submit-definition.png)
+definitions are shown for submitted words, with Korean explanations in English mode.
+
+![korean mode](/assets/images/about-end-word-kor.png)
+the same loop running in Korean mode.
+
+![emote picker](/assets/images/about-end-word-emojis.png)
+emotes for some light in-game interaction.
+
+![emote displayed](/assets/images/about-end-word-emoji2.png)
+emotes pop up over the game screen for all players to see.
 
 ## Project Posts
 
 - [2026-06-27: Host > spectator switch, player flow debugging](/blog/2026-06-27)
 - [2026-07-05: Broken tests, timer implementation, custom test runner](/blog/2026-07-05)
-- [2026-07-07: E2e test attempt, visible state indicators](/blog/2026-07-07)
+- [2026-07-07: E2E test attempt, visible state indicators](/blog/2026-07-07)
 - [2026-07-10: user_metadata.display_name fix](/blog/2026-07-10)
-
-Repository: not yet public. Will link here when available.
