@@ -5,6 +5,18 @@ tags: [word-game, project-overview]
 layout: post
 ---
 
+<div class="ai-summary" markdown="1">
+The post describes **end-word**, a solo/multiplayer word-chain game (끝말잇기) built for English/Korean language learners.
+
+ Players take turns submitting words starting with the last letter of the previous word, against a per-turn timer. Missing the timer or submitting an invalid word costs a life — lose all lives and you're out. Supports up to 4 players plus solo play and spectating, in both Korean and English, with dictionary definitions shown for every submitted word.
+
+ Technically, it uses **React/TypeScript/Tailwind/daisyUI/Zustand** on the frontend and **Next.js + Supabase (Postgres, Auth, Realtime)** on the backend, with a **Python FastAPI + marisa-trie** dictionary service for Korean and **WordNet** for English. Testing is **Playwright + Vitest + MSW**, deployed on **Vercel**.
+
+ The project is still in active development — current work includes client-server user ID handling and host-to-spectator switching.
+
+ **In short:** a competitive, bilingual vocabulary trainer disguised as a word game.
+</div>
+
 ## What is end-word?
 
 A solo/multiplayer web game, where the players take turns submitting words which begin with the last letter of the previous word. There is a timer for how long a player has to submit a word, failing to submit a word or submitting an incorrect word costs a life. When all lives are gone, the player is out of the game. Supports both Korean and English.
