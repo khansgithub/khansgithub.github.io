@@ -1,4 +1,4 @@
 ---
-slug: 투덜투덜
-name: rants
+slug: rants
+name: Rants
 ---

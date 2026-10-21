@@ -36,7 +36,7 @@ so I opened up my tests. and immediately, became sidetracked.
 the tests look like this:
 ```typescript
 test(roomFlowTestNames.testName, async ({ browser, request }, testInfo) => {
-	// skips the test if it's not run through the custom runnner, because the test requires specific env vars to be enabled.
+	// skips the test if it's not run through the custom runner, because the test requires specific env vars to be enabled.
     if (envGet("CUSTOM_PLAYWRIGHT_RUNNER") !== "true")
         test.skip(true, "CUSTOM_PLAYWRIGHT_RUNNER not set to true");
 
@@ -90,7 +90,7 @@ idk if it was good or not, but it seems like it should work. right...?
 
 and so the annoyances started stacking...
 
-<span class="inline-tag i-t-derail">[derail]</span> fuck knows what was wrong with cursor, but the auto format wasn't working. that's pretty irritating. I spent a bit tinkering with the ide (the last thing you want to do... when you're taking a *quick detour* before addressing the **actual problem**). didn't work. I said fuck it and opened zed instead.
+<span class="inline-tag i-t-derail">[derail]</span> fuck knows what was wrong with cursor, but the auto format wasn't working. that's pretty irritating. I spent a bit tinkering with the IDE (the last thing you want to do... when you're taking a *quick detour* before addressing the **actual problem**). didn't work. I said fuck it and opened zed instead.
 
 i run the test using the npm command, but the test just wouldn't work. it just kept skipping...?! super strange. I spent quite some time trying to figure out what on earth is going on. why is it just skipping the test. what did I do wrong in the refactor that just messed up everything. maybe an hour or so later, aha. I used the wrong npm command :D
 

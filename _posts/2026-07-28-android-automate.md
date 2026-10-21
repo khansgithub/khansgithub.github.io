@@ -7,11 +7,14 @@ layout: post
 
 _This is part of the [kakao-agent](/blog/about-kakao-agent) project — a loose collection of automation tools that plug into KakaoTalk via agent-messenger._
 
+_This flow is being replaced by [kakao-auto-sender](/blog/about-kakao-auto-sender) — an Android app that does the same scheduling, but with run history and logs you can actually read. The Automate flow is still the live one for now._
+
 ## [kakao-news-automation]
 
-as part of the automation workflow i've been building, i'm using the [Automate](https://llamalab.com/automate/) app by llamalab to run the automation loop. the logic is pretty dead simple: every 40 minutes, run a shell script via [Termux](https://termux.dev/en/) + the [Termux Tasker](https://github.com/termux/termux-tasker) plugin, which sends the message to the kakaotalk chatroom.
+as part of the automation workflow i've been building, i'm using the [Automate](https://llamalab.com/automate/) app by llamalab to run the automation loop. the flow looks at how many files are in the `new` directory, works out when each of them should be sent so they're evenly spaced between the start and stop times, and then sleeps until the next one is due. when it wakes up, it runs a shell script via [Termux](https://termux.dev/en/) + the [Termux Tasker](https://github.com/termux/termux-tasker) plugin, which sends the message to the kakaotalk chatroom. (it started out much simpler - every 40 minutes, run the script - which is the loop in the screenshot below.)
 
 ![automate loop](/assets/images/2026-07-28-1.png)
+the original loop - a 40 minute delay between each run.
 
 as with all things, once it was implemented, the ideas for improvement started flooding in:
 - support sending to multiple chatrooms

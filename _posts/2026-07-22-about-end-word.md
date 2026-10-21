@@ -8,7 +8,7 @@ layout: post
 <div class="ai-summary" markdown="1">
 The post describes **end-word**, a solo/multiplayer word-chain game (끝말잇기) built for English/Korean language learners.
 
- Players take turns submitting words starting with the last letter of the previous word, against a per-turn timer. Missing the timer or submitting an invalid word costs a life — lose all lives and you're out. Supports up to 4 players plus solo play and spectating, in both Korean and English, with dictionary definitions shown for every submitted word.
+ Players take turns submitting words starting with the last letter of the previous word, against a per-turn timer. Missing the timer or submitting an invalid word costs a life — lose all lives and you're out. Supports up to 4 players plus solo play and spectating, in both Korean and English, with Korean dictionary definitions shown for submitted words in English mode.
 
  Technically, it uses **React/TypeScript/Tailwind/daisyUI/Zustand** on the frontend and **Next.js + Supabase (Postgres, Auth, Realtime)** on the backend, with a **Python FastAPI + marisa-trie** dictionary service for Korean and **WordNet** for English. Testing is **Playwright + Vitest + MSW**, deployed on **Vercel**.
 
@@ -73,7 +73,8 @@ emotes pop up over the game screen for all players to see.
 
 ## Project Posts
 
-- [2026-06-27: Host > spectator switch, player flow debugging](/blog/2026-06-27)
-- [2026-07-05: Broken tests, timer implementation, custom test runner](/blog/2026-07-05)
-- [2026-07-07: E2E test attempt, visible state indicators](/blog/2026-07-07)
-- [2026-07-10: user_metadata.display_name fix](/blog/2026-07-10)
+- [2026-06-27: Host > spectator switch, player flow debugging](/blog/host-toggle)
+- 2026-07-05: Broken tests, custom test runner
+- 2026-07-05: Timer implementation
+- 2026-07-07: Error handler cleanup, E2E test attempt
+- 2026-07-10: Whisper failure, user_metadata.display_name fix

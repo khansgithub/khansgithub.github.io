@@ -1,4 +1,4 @@
 ---
-slug: agent-messenger
+slug: kakao-automation
 name: Agent Messenger
 ---

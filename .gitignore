@@ -4,3 +4,6 @@
 .sass-cache
 _site
 Gemfile.lock
+_sessions/
+session-ses_*.md
+_posts/wip/
