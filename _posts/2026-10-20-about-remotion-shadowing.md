@@ -8,21 +8,13 @@ layout: post
 <div class="ai-summary" markdown="1">
 The post describes **remotion-shadowing**, a generator for English shadowing lesson videos.
 
- The key idea is that the video format and the lesson content are kept separate. The format - the section structure, the karaoke word highlight, the repeat-along pause, the key phrase drill - is code. The lesson - the text, the translations, the voices, the imagery, the scenario - is data and assets. Swapping them produces a different video in the same shape.
+The key idea is that the video format and the lesson content are kept separate. The format - the section structure, the karaoke word highlight, the repeat-along pause, the key phrase drill - is code. The lesson - the text, the translations, the voices, the imagery - is data and assets. Swapping them produces a different video in the same shape.
 
- The word-level timings that drive the highlight are derived rather than hand-written. A script transcribes a new recording and aligns it against the script text with a forced-alignment pass, so swapping the voices doesn't mean redoing the timings by hand.
+It is a **Remotion** project. The lesson lives in a flat `script.json`, one entry per line, and every tunable sits in a single `config.ts` whose type carries per-key documentation. The word-level timings that drive the highlight are derived rather than hand-written, so swapping the voices doesn't mean redoing them by hand.
 
- Technically it is a **Remotion** project. The lesson content lives in a flat `script.json`, one entry per line, carrying the english text, the korean translation, the voice file, the word-level timings and the window to play from. Every tunable sits in a single `config.ts`, whose type carries per-key documentation as annotations. A timing engine derives the whole timeline from those two inputs.
+Around the code sits a harness: a `PROMPTING.md` contract for working with an agent, eight distilled skills, and helper scripts for frame-level inspection and audio probing. A second format, `remotion-shadowing-2`, has since generalised the engine - the cast is data, the background can be a looping clip, and every section is optional.
 
- Around the code sits a harness: a `PROMPTING.md` contract for working with an agent on the project, eight distilled skills, and helper scripts for frame-level inspection and audio probing.
-
- It has since grown a second format, `remotion-shadowing-2`, which is a narration format rather than a dialogue. Getting there meant pulling more of the specifics out of the engine: the cast is data, the background can be a looping clip instead of a set of scene images, and every section of the video is optional.
-
- The project also fails quietly in several places. Missing audio throws, but wrong strings, wrong fonts and wrong names all fall back silently, so any change to words, names or fonts gets verified with a render.
-
- It started as a canvas-based HTML version, went through a couple of attempts with **HyperFrames**, and settled on **Remotion**, which was a lot simpler.
-
- **In short:** not one video, but a machine for making them - the video is an output, and the reusable part is the engine.
+**In short:** not one video, but a machine for making them - the video is an output, and the reusable part is the engine.
 </div>
 
 ## What is remotion-shadowing?

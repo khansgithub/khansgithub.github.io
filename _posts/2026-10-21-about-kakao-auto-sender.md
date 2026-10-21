@@ -6,15 +6,15 @@ layout: post
 ---
 
 <div class="ai-summary" markdown="1">
-The post describes **kakao-auto-sender**, an Android app that schedules and runs python "jobs" on a phone with the screen off. It is the intended replacement for an earlier low-code automation flow, which is still the live one.
+The post describes **kakao-auto-sender**, an Android app that schedules and runs python "jobs" on a phone with the screen off - pulling news summaries into a KakaoTalk chat. It is the intended replacement for the Automate + Termux flow that is still the live one.
 
- The workflow being automated pulls news summaries and pushes them into a KakaoTalk chat. The previous implementation used the **Automate** app driving **Termux** through the Termux Tasker plugin - the flow counted the files in the `new` directory, worked out when each of them should be sent so they were evenly spaced between the start and stop times, and slept until the next one was due. It worked, but it randomly kept breaking - not sending messages, silently failing, sending one message several times, not moving the file when it should after sending - and it was hard to debug when it did, because adding logging blocks was cumbersome, the output sometimes didn't pipe to the logs, and the debug block is a text field where longer expressions got messy. The Automate app also doesn't work on Samsung DeX, so being forced to do it on mobile became quite annoying. The new app re-implements the same scheduling model - a daily window, posts spaced evenly by the number of files available, a frequency recalculated each new day - as a real application instead. It also records what every run did, which the flow could not: per-job state, a live countdown to the next run, and the exact command, input context, stdout and stderr for each one.
+That flow kept breaking - not sending, failing silently, sending duplicates - and was hard to debug on a phone screen. The app reimplements the same scheduling model (a daily window, posts spaced evenly by the number of files, recalculated each new day) and adds what the flow could not: per-job state, a countdown to the next run, and the full command, stdout and stderr for every run.
 
- Technically it is **Kotlin + Jetpack Compose + Room**. Scheduling is `AlarmManager.setAndAllowWhileIdle` into a foreground `ExecService` holding a `PARTIAL_WAKE_LOCK`, deliberately inexact so no exact-alarm permission is needed. Jobs run through **Termux** via a `RUN_COMMAND` intent into `termux-chroot`, and results come back through a `PendingIntent` bundle carrying stdout, stderr and the exit code. The script reports its own state on stdout (`DAY=`, `COUNT=`, `INDEX=`, `DONE=`, `DELAY=`) and receives the previous run's facts back as `--prev-*` arguments. The timing and day-rollover rules are pure functions over an injectable clock, covered by JVM unit tests.
+Technically it is **Kotlin + Jetpack Compose + Room**. Scheduling is `AlarmManager.setAndAllowWhileIdle` into a foreground `ExecService` holding a `PARTIAL_WAKE_LOCK`, deliberately inexact so no exact-alarm permission is needed. Jobs run through **Termux** via a `RUN_COMMAND` intent into `termux-chroot`, and results come back through a `PendingIntent` bundle carrying stdout, stderr and the exit code. The timing and day-rollover rules are pure functions over an injectable clock.
 
- The project is explicitly WIP - the Automate flow is still the live one, the job script hasn't been ported to the app's protocol yet, and the app has not yet replaced the flow in practice.
+The project is explicitly WIP - the job script hasn't been ported to the app's protocol yet, so the app has not yet replaced the flow in practice.
 
- **In short:** the same automation, rebuilt as an app - because the flow kept breaking in ways that were hard to pin down, and even harder to debug from a phone screen.
+**In short:** the same automation, rebuilt as an app - because the flow kept breaking in ways that were hard to pin down, and even harder to debug from a phone screen.
 </div>
 
 ## What is kakao-auto-sender?
