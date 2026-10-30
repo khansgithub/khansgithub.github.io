@@ -11,9 +11,9 @@ i've been working on a small tool to programmatically build videos, without dire
 
 ## extended track
 
-i had gemini generate an audio file for some background audio. however when i aligned it to the rest of the video, it was just a few seconds short. i tried to get gemini to recreate it longer but it couldn't exactly reproduce it. so it made a track with the same bpm and similar sounding sounds. i pulled the two tracks into Audacity, and tried different ways to extend the original track, using the second generated audio.
+i had gemini generate an audio file for some background audio. the video is a roleplay of a customer-server interaction, with two customers - one track per customer. the first customer's track fell a few seconds short of the end of the first interaction, leaving a tangible few moments of background silence mid-conversation, which was too uncomfortable for the atmosphere i was trying to create. i tried to get gemini to recreate it longer but it couldn't exactly reproduce it. so it made a track with the same bpm and similar sounding sounds. i pulled the two tracks into Audacity, and tried different ways to extend the original track, using the second generated audio.
 
-i took a section from the second audio track, and aligned it with the end of the original audio track by the kicks. i added a crossfade to blend the audio. after this i decided to clip off the rest of the audio as the track would have been much longer than i needed. i also wanted to minimise how many features i'm adding to the tool with ai as it would teeter the project into a culmination of tools which slowly turn into a mess.
+i took a section from the second audio track, and aligned it with the end of the original audio track by the kicks. i added a crossfade to blend the audio. the extended version ended up roughly twice the length of the original, so i clipped off the rest about 10s past the crossfade point. i decided to clip rather than add a start/end config per bgm file, as i wanted to minimise how many features i'm adding to the tool with ai - it would teeter the project into a culmination of tools which slowly turn into a mess.
 
 the result was good enough to use, especially since it was being played at low volume - the difference between the original track and extended section didn't stand out too much.
 
@@ -81,13 +81,13 @@ i then went to Audacity and said fuck it, let me just render the video and then 
 
 this was perplexing but i didn't know what to do with this information. i just mindlessly looked around things hoping to just suddenly figure it out.
 
-<!-- add image -->
+![audacity waveform](/assets/images/raw-audio-clipping-1.png)
 
 ### tail cut
 
 the fix i decided was to directly add the fadeout into the audio file. it's not nice but at this point i don't really have any other option. this is where it all made sense.
 
-the `bgm2-extended` audio file was the original audio that gemini generated, plus the extended version that glued on to it. and i also cutoff the tail end of the track as i needed it to be a certain length (i didn't want to add a start/end config per bgm audio file feature). the audio ended on a snare hit, with lots of midrange frequencies and high end melodic frequencies. of course this won't cleanly fade out. the frequencies aren't working in a way to help it fade out cleanly.
+the `bgm2-extended` audio file was the original audio that gemini generated, plus the extended version that glued on to it. i also cut off the tail end of the track as i needed it to be a certain length (i didn't want to add a start/end config per bgm audio file feature). that cut landed on a snare hit, with lots of midrange frequencies and high end melodic frequencies - right where the first track fades out into silence as the first customer's interaction finishes, a few moments before the second track fades in for the second customer. of course this won't cleanly fade out. the frequencies aren't working in a way to help it fade out cleanly.
 
 ### sweeping low pass
 
