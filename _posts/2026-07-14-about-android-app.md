@@ -2,6 +2,7 @@
 title: "about android app"
 date: 2026-07-14
 tags: [automation, kakao-automation, ai, android]
+layout: post
 ---
 
 _This is part of the [kakao-agent](/blog/about-kakao-agent) project - a pipeline that transcribes YouTube videos, summarizes them with AI, and posts the result to KakaoTalk._
