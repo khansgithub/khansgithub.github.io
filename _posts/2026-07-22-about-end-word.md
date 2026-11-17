@@ -74,7 +74,7 @@ emotes pop up over the game screen for all players to see.
 ## Project Posts
 
 - [2026-06-27: Host > spectator switch, player flow debugging](/blog/host-toggle)
-- 2026-07-05: Broken tests, custom test runner
-- 2026-07-05: Timer implementation
-- 2026-07-07: Error handler cleanup, E2E test attempt
-- 2026-07-10: Whisper failure, user_metadata.display_name fix
+- [2026-07-05: Broken tests, custom test runner](/blog/ai-harness)
+- [2026-07-05: Timer implementation](/blog/timer-bar)
+- [2026-07-07: E2E attempt, display name fix](/blog/supabase-display-name)
+- [2026-11-10: Timer bar freezing, late submission bug](/blog/timer-bar-bug)
